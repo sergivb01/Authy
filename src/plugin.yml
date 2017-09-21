@@ -1,0 +1,17 @@
+name: SimpleRename
+main: com.veil.Core
+version: 2.4
+commands:
+    auth:
+        description: 'SimpleRename Plugin Command'
+        usage: '/auth <player>'
+    lobby:
+        description: 'SimpleRename Plugin Command'
+        usage: '/lobby'
+
+permissions:
+    auth.admin:
+        description: 'Admin perm for Auth.'
+    auth.required:
+        description: 'Access perm for Auth.'
+        default: op

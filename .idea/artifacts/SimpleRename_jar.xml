@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="SimpleRename:jar">
-    <output-path>$USER_HOME$/Desktop/Output/New</output-path>
-    <root id="archive" name="Auth.jar">
-      <element id="module-output" name="Auth" />
-    </root>
-  </artifact>
-</component>

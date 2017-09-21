@@ -11,41 +11,34 @@ import org.bukkit.entity.Player;
 public class IpResetCommand
         implements CommandExecutor
 {
-    public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3)
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args)
     {
-        if (!arg0.hasPermission("ipmatcher.admin"))
-        {
-            arg0.sendMessage(ChatColor.RED + "No permission.");
+        if (!sender.hasPermission("ipmatcher.admin")) {
+            sender.sendMessage(ChatColor.RED + "No permission.");
             return true;
         }
-        if (arg1.getName().equalsIgnoreCase("auth"))
+        if (cmd.getName().equalsIgnoreCase("auth"))
         {
-            if (arg3.length != 1)
-            {
-                arg0.sendMessage(ChatColor.RED + "Usage: " + arg1.getUsage());
+            if (args.length != 1) {
+                sender.sendMessage(ChatColor.RED + "Usage: " + cmd.getUsage());
                 return true;
             }
-            if (arg3[0] == null)
-            {
-                arg0.sendMessage(ChatColor.RED + "Usage: " + arg1.getUsage());
+            if (args[0] == null) {
+                sender.sendMessage(ChatColor.RED + "Usage: " + cmd.getUsage());
                 return true;
             }
-            Player p = Bukkit.getPlayer(arg3[0]);
-            OfflinePlayer ofp = Bukkit.getOfflinePlayer(arg3[0]);
-            if ((p == null) && (ofp == null))
-            {
-                arg0.sendMessage(ChatColor.RED + "Usage: " + arg1.getUsage());
+            Player p = Bukkit.getPlayer(args[0]);
+            OfflinePlayer ofp = Bukkit.getOfflinePlayer(args[0]);
+            if ((p == null) && (ofp == null)) {
+                sender.sendMessage(ChatColor.RED + "Usage: " + cmd.getUsage());
                 return true;
             }
-            if (p != null)
-            {
+            if (Core.getInstance().getDB().getResetQueue().contains(p.getUniqueId())) {
+                sender.sendMessage(ChatColor.RED + "This player is already in queue for authentication.");
+            }
+            if (p != null) {
                 Core.getInstance().getDB().addToResetQueue(p);
-                arg0.sendMessage(ChatColor.YELLOW + "You have authenticated " + p.getName());
-            }
-            else
-            {
-                Core.getInstance().getDB().addToResetQueue(ofp);
-                arg0.sendMessage(ChatColor.YELLOW + "You have authenticated " + ofp.getName());
+                sender.sendMessage(ChatColor.YELLOW + "You have authenticated " + p.getName());
             }
             return true;
         }

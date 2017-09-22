@@ -10,12 +10,9 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class IpResetCommand
-        implements CommandExecutor
-{
-    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args)
-    {
+public class IpResetCommand implements CommandExecutor {
 
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
         if (!sender.hasPermission("ipmatcher.admin")) {
             sender.sendMessage(ChatColor.RED + "No permission.");
             return true;

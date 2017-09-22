@@ -15,8 +15,7 @@ import java.net.URLConnection;
 
 import java.util.HashMap;
 
-public class Core
-        extends JavaPlugin {
+public class Core extends JavaPlugin {
     public String PREFIX = ChatColor.GOLD.toString() + ChatColor.BOLD + "Veil " + ChatColor.GRAY + "» " + ChatColor.YELLOW;
     private static Core instance;
     private DB db;
@@ -53,7 +52,6 @@ public class Core
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return toReturn;
 

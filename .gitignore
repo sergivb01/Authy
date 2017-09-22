@@ -58,6 +58,7 @@ hs_err_pid*
 /out/
 /.idea/
 Auth.iml
+Authy.iml
 # mpeltonen/sbt-idea plugin
 .idea_modules
 

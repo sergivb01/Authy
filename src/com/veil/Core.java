@@ -12,11 +12,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+
 import java.util.HashMap;
 
 public class Core
         extends JavaPlugin {
-    public String PREFIX = ChatColor.DARK_RED + "[SECURITY] ";
+    public String PREFIX = ChatColor.GOLD.toString() + ChatColor.BOLD + "Veil " + ChatColor.GRAY + "» " + ChatColor.YELLOW;
     private static Core instance;
     private DB db;
 
@@ -29,7 +30,6 @@ public class Core
     }
 
     public void onEnable() {
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         instance = this;
         this.db = new DB();
         Bukkit.getServer().getPluginManager().registerEvents(new JoinHandler(), this);
@@ -38,8 +38,6 @@ public class Core
 
     public static HashMap<String, String> getLoc(String ip) {
         HashMap<String, String> toReturn = new HashMap<>();
-
-
         try {
             URL url = new URL("http://ip-api.com/line/" + ip);
             URLConnection connection = url.openConnection();
@@ -50,18 +48,19 @@ public class Core
             String line4 = in.readLine();
             String line5 = in.readLine();
             String city = in.readLine();
-            /*String line7 = in.readLine();
-            String line8 = in.readLine();
-            String line9 = in.readLine();
-            String line10 = in.readLine();
-            String line11 = in.readLine();
-            String organisation = in.readLine();*/
             toReturn.put("city", city);
             toReturn.put("verify", verify);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+
         return toReturn;
+
     }
+
+
+
+
+
 }

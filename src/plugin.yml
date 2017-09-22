@@ -5,9 +5,6 @@ commands:
     auth:
         description: 'SimpleRename Plugin Command'
         usage: '/auth <player>'
-    lobby:
-        description: 'SimpleRename Plugin Command'
-        usage: '/lobby'
 
 permissions:
     auth.admin:

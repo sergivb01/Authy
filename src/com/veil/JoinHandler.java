@@ -10,7 +10,6 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.UUID;
 
-import com.customhcf.base.BasePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -40,24 +39,23 @@ public class JoinHandler
 
         if (Core.getInstance().getDB().getIp(p) == null) {
             if (!verify.equalsIgnoreCase("success")) {
-                p.kickPlayer(Core.getInstance().PREFIX + ChatColor.RED + "An error occured, please contact developer with " + ChatColor.DARK_RED + "#1 >" + verify);
-                Bukkit.getConsoleSender().sendMessage(verify);
+                p.kickPlayer(ChatColor.RED + "Could not connect to API " + ChatColor.GRAY + "[i]");
                 return;
             }
             Core.getInstance().getDB().setIp(p, city);
-            p.sendMessage(Core.getInstance().PREFIX + ChatColor.GREEN + "You have been authenticated for the first time.");
+            p.sendMessage(Core.getInstance().PREFIX + "You have been authenticated for the first time.");
             return;
 
         }
         if (Core.getInstance().getDB().getResetQueue().contains(p.getUniqueId().toString())) {
 
 
-            if (verify != "success") {
-                p.kickPlayer(Core.getInstance().PREFIX + "An error occured, please contact developer with " + ChatColor.DARK_RED + "#2");
+            if (!verify.equalsIgnoreCase("success")) {
+                p.kickPlayer(ChatColor.RED + "Could not connect to API " + ChatColor.GRAY + "[ii]");
                 return;
             }
             p.sendMessage(
-                    Core.getInstance().PREFIX + ChatColor.GREEN + "An admin has authenticated you since last login.");
+                    Core.getInstance().PREFIX + "An admin has authenticated you since last login.");
             Core.getInstance().getDB().setIp(p, city);
             Core.getInstance().getDB().delFromResetQueue(p);
             return;
@@ -66,22 +64,23 @@ public class JoinHandler
 
 
         if (!verify.equalsIgnoreCase("success")) {
-            p.kickPlayer(ChatColor.RED + "An error occured, please contact developer with " + ChatColor.DARK_RED + "#3");
+            p.kickPlayer(ChatColor.RED + "Could not connect to API " + ChatColor.GRAY + "[iii]");
             return;
         }
         if (!Core.getInstance().getDB().getIp(p).equals(city)) {
             p.kickPlayer(
-                    Core.getInstance().PREFIX + "\n" + ChatColor.GRAY + "(" + p.getName() + ")" + "\n" + ChatColor.RED + "You have failed to pass VeilMC authentication protocols." + "\n" + ChatColor.YELLOW + "This system is to prevent un-authorised access to accounts.");
+                    Core.getInstance().PREFIX + "Security" + "\n" + "\n" + ChatColor.YELLOW + "Sorry " + p.getName() + " you have failed " + "\n" + ChatColor.YELLOW + "to pass VeilMC authentication protocols." + "\n" + ChatColor.WHITE + "This system is to prevent un-authorised access to accounts.");
             for (Player abc : Bukkit.getOnlinePlayers()) {
+
                 if (abc.hasPermission("auth.required")) {
                     abc.sendMessage(" ");
-                    abc.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + p.getName() + ChatColor.RED + "" + ChatColor.BOLD + " failed login security authentication");
+                    abc.sendMessage(Core.getInstance().PREFIX + p.getName() + " failed login security authentication");
                     abc.sendMessage(" ");
 
                 }
             }
             return;
         }
-        p.sendMessage(Core.getInstance().PREFIX + ChatColor.GREEN + "Authentication successful");
+        p.sendMessage(Core.getInstance().PREFIX + "Authentication successful");
     }
 }

@@ -8,8 +8,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class JoinHandler
-        implements Listener {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class JoinHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void join(PlayerJoinEvent event) {
         Player p = event.getPlayer();
@@ -63,7 +67,7 @@ public class JoinHandler
                             ChatColor.YELLOW + "Sorry " + p.getName() + " you have failed " + "\n" +
                             ChatColor.YELLOW + "to pass VeilMC authentication protocols." + "\n" +
                             ChatColor.WHITE + "This system is to prevent un-authorised access to accounts.");
-
+            notifySlack(p, city);
             //p.getName() + " tried to join though a new IP Address! (" + Core.getLoc(p.getAddress().getHostName()).get("city") + ")"
             for (Player abc : Bukkit.getOnlinePlayers()) {
                 if (abc.hasPermission("auth.required")) {
@@ -76,4 +80,26 @@ public class JoinHandler
         }
         p.sendMessage(Core.getInstance().PREFIX + "Authentication successful");
     }
+
+
+    private void notifySlack(Player player, String city){
+        try {
+            //Runtime.getRuntime().exec("/bin/bash -c curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Staff " + player.getName() + " tried to join unsuccessfully from " + city + "!" +"\"}' https://hooks.slack.com/services/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");
+            HttpURLConnection httpcon = (HttpURLConnection) ((new URL("https://hooks.slack.com/services/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").openConnection()));
+            httpcon.setDoOutput(true);
+            httpcon.setRequestProperty("Content-Type", "application/json");
+            //httpcon.setRequestProperty("Accept", "application/json");
+            httpcon.setRequestMethod("POST");
+            httpcon.connect();
+
+            String message = "{\"text\":\"" + player + " tried to join from " + city + "!" +"\"}";
+            byte[] outputBytes = message.getBytes("UTF-8");
+            OutputStream os = httpcon.getOutputStream();
+            os.write(outputBytes);
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
